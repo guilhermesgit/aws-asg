@@ -1,5 +1,5 @@
-# Título do projeto
-Orquestração de Escalabilidade na Nuvem: Load Balancer, Auto Scaling e Spot Instances na AWS
+# Orquestração de Escalabilidade na Nuvem: Load Balancer, Auto Scaling e Spot Instances na AWS
+
 
 
 Esse título enfatiza a utilização de tecnologias-chave, como Load Balancer, Auto Scaling e Spot Instances, enquanto sugere um foco na eficiência e escalabilidade na nuvem AWS.
