@@ -53,3 +53,4 @@ No outputs.
 <!-- END_TF_DOCS -->
 
 ![workflow](https://github.com/guilhermesgit/aws-asg/actions/workflows/documentation.yml/badge.svg?branch=dev)
+![workflow](https://github.com/guilhermesgit/aws-asg/actions/workflows/tfsec.yml/badge.svg?branch=main)
