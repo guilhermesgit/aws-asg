@@ -52,4 +52,4 @@ No inputs.
 No outputs.
 <!-- END_TF_DOCS -->
 
-![workflow](https://github.com/guilhermesgit/aws-asg/actions/workflows/documentation.yml/badge.svg)
+![workflow](https://github.com/guilhermesgit/aws-asg/actions/workflows/documentation.yml/badge.svg?branch=dev)
