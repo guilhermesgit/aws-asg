@@ -4,6 +4,8 @@
 
 Esse título enfatiza a utilização de tecnologias-chave, como Load Balancer, Auto Scaling e Spot Instances, enquanto sugere um foco na eficiência e escalabilidade na nuvem AWS.
 
+Em resumo, usar um balanceador de carga com instâncias spot na AWS permite aos usuários construir arquiteturas altamente disponíveis, escaláveis e econômicas, aproveitando os benefícios das instâncias spot para reduzir custos e aumentar a flexibilidade.
+
 ## Arquitetura do projeto
 
 ![screenshot](img/alb.jpg)
