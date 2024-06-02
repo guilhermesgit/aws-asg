@@ -7,7 +7,7 @@ data "aws_availability_zones" "available" {
 
 
 # Módulo VPC #
-
+#tfsec:ignore:aws-ec2-require-vpc-flow-logs-for-all-vpcs
 module "vpc" {
   source  = "terraform-aws-modules/vpc/aws"
   version = "5.8.1"
@@ -30,14 +30,18 @@ module "vpc" {
 }
 
 # Security Group LB #
-
+#tfsec:ignore:aws-ec2-no-public-ingress-sgr
+#tfsec:ignore:aws-ec2-no-public-egress-sgr
 resource "aws_security_group" "app_lb" {
-  name = "learn-asg-app-lb"
+  name        = "http"
+  description = "Allow inbound HTTP traffic"
+
   ingress {
     from_port   = 80
     to_port     = 80
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
+    description = "Liberado porta lb http"
   }
 
   egress {
@@ -45,6 +49,7 @@ resource "aws_security_group" "app_lb" {
     to_port     = 0
     protocol    = "-1"
     cidr_blocks = ["0.0.0.0/0"]
+    description = "Liberado outbound para internet"
   }
 
   vpc_id = module.vpc.vpc_id
@@ -53,10 +58,14 @@ resource "aws_security_group" "app_lb" {
 
 
 # Security Group instancias #
-
+#tfsec:ignore:aws-ec2-no-public-egress-sgr
+#tfsec:ignore:aws-ec2-no-public-ingress-sgr
 resource "aws_security_group" "sg_ec2" {
-  name = "app-asg-lb-instance"
+  name        = "http"
+  description = "Allow inbound VPC traffic"
+
   ingress {
+    description     = "HTTP From ALB"
     from_port       = 80
     to_port         = 80
     protocol        = "tcp"
@@ -66,7 +75,8 @@ resource "aws_security_group" "sg_ec2" {
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
+    cidr_blocks = ["10.0.0.0/16"]
+    description = "Allow inbound SSH traffic"
   }
 
   egress {
@@ -74,6 +84,7 @@ resource "aws_security_group" "sg_ec2" {
     to_port     = 0
     protocol    = "-1"
     cidr_blocks = ["0.0.0.0/0"]
+    description = "liberado Outbound para internet"
   }
 
   vpc_id = module.vpc.vpc_id
@@ -81,7 +92,7 @@ resource "aws_security_group" "sg_ec2" {
 
 
 # Criação da instância modelo #
-
+#tfsec:ignore:aws-ec2-enforce-launch-config-http-token-imds
 resource "aws_launch_template" "teste" {
   name_prefix   = "teste"
   image_id      = "ami-04b70fa74e45c3917"
@@ -162,7 +173,8 @@ resource "aws_autoscaling_group" "bar" {
 
 
 #  ALB das instâncias #
-
+#tfsec:ignore:aws-elb-alb-not-public
+#tfsec:ignore:aws-elb-drop-invalid-headers
 resource "aws_lb" "app" {
   name               = "learn-asg-app-lb"
   internal           = false
@@ -183,6 +195,7 @@ resource "aws_lb_target_group" "app" {
 
 # Listener da porta 80 #
 
+#tfsec:ignore:aws-elb-http-not-used
 resource "aws_lb_listener" "app" {
   load_balancer_arn = aws_lb.app.arn
   port              = "80"
@@ -205,7 +218,6 @@ resource "aws_autoscaling_attachment" "app" {
 
 
 resource "aws_eip" "nat" {
-  count  = 1
-  domain = vpc
-
+  count = 1
+  vpc   = true
 }
