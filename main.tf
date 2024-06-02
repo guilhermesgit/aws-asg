@@ -15,15 +15,15 @@ module "vpc" {
   name = "main-vpc"
   cidr = "10.0.0.0/16"
 
-  azs            = data.aws_availability_zones.available.names
-  public_subnets = ["10.0.4.0/24", "10.0.5.0/24", "10.0.6.0/24"]
+  azs             = data.aws_availability_zones.available.names
+  public_subnets  = ["10.0.4.0/24", "10.0.5.0/24", "10.0.6.0/24"]
   private_subnets = ["10.0.10.0/24", "10.0.11.0/24", "10.0.12.0/24"]
 
   enable_dns_hostnames = true
   enable_dns_support   = true
-  enable_nat_gateway = true
-  single_nat_gateway  = true
-  external_nat_ip_ids = "${aws_eip.nat.*.id}"  
+  enable_nat_gateway   = true
+  single_nat_gateway   = true
+  external_nat_ip_ids  = aws_eip.nat.*.id
 
 
 
@@ -57,12 +57,12 @@ resource "aws_security_group" "app_lb" {
 resource "aws_security_group" "sg_ec2" {
   name = "app-asg-lb-instance"
   ingress {
-    from_port   = 80
-    to_port     = 80
-    protocol    = "tcp"
+    from_port       = 80
+    to_port         = 80
+    protocol        = "tcp"
     security_groups = [aws_security_group.app_lb.id]
   }
- ingress {
+  ingress {
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
@@ -83,11 +83,11 @@ resource "aws_security_group" "sg_ec2" {
 # Criação da instância modelo #
 
 resource "aws_launch_template" "teste" {
-  name_prefix            = "teste"
-  image_id               = "ami-04b70fa74e45c3917"
-  instance_type          = "t2.micro"
-  user_data              = filebase64("example.sh")
-  key_name               = "linux-devops"
+  name_prefix   = "teste"
+  image_id      = "ami-04b70fa74e45c3917"
+  instance_type = "t2.micro"
+  user_data     = filebase64("example.sh")
+  key_name      = "linux-devops"
 
 
   iam_instance_profile {
@@ -102,11 +102,11 @@ resource "aws_launch_template" "teste" {
     }
   }
 
-    network_interfaces {
-      associate_public_ip_address = false
-      security_groups = [aws_security_group.sg_ec2.id]
+  network_interfaces {
+    associate_public_ip_address = false
+    security_groups             = [aws_security_group.sg_ec2.id]
 
-   }
+  }
 
 
   tags = {
@@ -205,7 +205,7 @@ resource "aws_autoscaling_attachment" "app" {
 
 
 resource "aws_eip" "nat" {
-  count = 1
+  count  = 1
   domain = vpc
 
 }
