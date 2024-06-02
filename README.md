@@ -1,5 +1,14 @@
-# aws-asg
-Projeto terraform com Application Load balancer e ASG
+# Título do projeto
+Orquestração de Escalabilidade na Nuvem: Load Balancer, Auto Scaling e Spot Instances na AWS
+
+
+Esse título enfatiza a utilização de tecnologias-chave, como Load Balancer, Auto Scaling e Spot Instances, enquanto sugere um foco na eficiência e escalabilidade na nuvem AWS.
+
+## Arquitetura do projeto
+
+![screenshot](img/alb.jpg)
+
+
 <!-- BEGIN_TF_DOCS -->
 ## Requirements
 
